@@ -82,8 +82,8 @@
               <div class="card-item-block">
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailsModal">Details</button>
                 <button class="btn btn-outline-secondary">Done</button>
-                <button class="btn btn-outline-secondary">Edit</button>
-                <button class="btn btn-outline-danger">Delete</button>
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#saveModal">Edit</button>
+                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
               </div>
             </div>
           </div>
@@ -192,18 +192,71 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <h5 class="modal-title" id="exampleModalLabel">Todo title</h5>
+              </div>
+              <div class="col text-end">
+                <span>10.06.2021 12:00</span>
+              </div>
+            </div>
+          </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+          This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
         </div>
       </div>
     </div>
+  </div>
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Todo item will be deleted. Continue?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-outline-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="saveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Save</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="todo-item-title" class="form-label">Title</label>
+              <input type="text" class="form-control" id="todo-item-title">
+            </div>
+            <div class="mb-3">
+              <label for="todo-item-details" class="form-label">Details</label>
+              <textarea class="form-control" id="todo-item-details"></textarea>
+            </div>
+            <input type="datetime" id="todo-item-date" name="todo-item-date">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-outline-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fab" data-bs-toggle="modal" data-bs-target="#saveModal">
+    <i class="bi-plus"></i>
   </div>
   <!-- <div id='navbar'></div>
   <div id='content'>
