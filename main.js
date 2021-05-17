@@ -12,6 +12,7 @@ const todoItemFormTitleInput = document.getElementById('todo-item-title')
 const todoItemFormDetailsInput = document.getElementById('todo-item-details')
 const todoItemFormDateInput = document.getElementById('todo-item-date')
 const todoItemSaveButton = document.getElementById('todo-item-save')
+const todoItemForm = document.querySelector('#saveModal form')
 
 /* bootstrap init */
 const saveModal =
@@ -32,6 +33,18 @@ todoItemFormDateInput.addEventListener('change', (ev) => {
   viewState.form.dateInput = ev.target.value
 })
 todoItemSaveButton.addEventListener('click', (ev) => {
-  console.log(viewState.form)
-  saveModal.hide()
+  const formSubmitEvent = new Event('submit', {'cancelable': true})
+  todoItemForm.addEventListener('submit', (ev) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    if (!todoItemForm.checkValidity()) {
+      console.log('invalid')
+    } else {
+      console.log(viewState.form)
+      saveModal.hide()
+    }
+    todoItemForm.classList.add('was-validated')
+  })
+  console.log(todoItemForm.dispatchEvent(formSubmitEvent))
+  
 })

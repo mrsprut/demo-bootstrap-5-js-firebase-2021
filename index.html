@@ -236,16 +236,26 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form>
+          <form class="needs-validation" novalidate>
             <div class="mb-3">
               <label for="todo-item-title" class="form-label">Title</label>
-              <input type="text" class="form-control" id="todo-item-title">
+              <input type="text" class="form-control" id="todo-item-title" required pattern=".{1,50}">
+              <div class="invalid-feedback">
+                Please provide a valid title
+              </div>
             </div>
             <div class="mb-3">
               <label for="todo-item-details" class="form-label">Details</label>
-              <textarea class="form-control" id="todo-item-details"></textarea>
+              <textarea class="form-control" id="todo-item-details" required maxlength="1024"></textarea>
+              <div class="invalid-feedback">
+                Please provide a valid dodo details
+              </div>
             </div>
-            <input type="date" id="todo-item-date" name="todo-item-date">
+            <input type="date" id="todo-item-date" name="todo-item-date" required>
+            <div class="invalid-feedback">
+              Please provide a valid dodo date
+            </div>
+            <!-- <input type="submit" value="Submit"> -->
           </form>
         </div>
         <div class="modal-footer">
