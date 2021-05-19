@@ -251,8 +251,8 @@
                 Please provide a valid dodo details
               </div>
             </div>
-            <div id="todo-item-date-output"></div>
-            <input type="date" id="todo-item-date" name="todo-item-date" data-date="" data-date-format="DD/MM/YYYY" required>
+            <div id="todo-item-date-output" data-date=""></div>
+            <input type="date" id="todo-item-date" name="todo-item-date" data-date-format="DD-MM-YYYY" required>
             <div class="invalid-feedback">
               Please provide a valid dodo date
             </div>
@@ -266,7 +266,7 @@
       </div>
     </div>
   </div>
-  <div class="fab" data-bs-toggle="modal" data-bs-target="#saveModal">
+  <div id="fab" class="fab" data-bs-toggle="modal" data-bs-target="#saveModal">
     <i class="bi-plus"></i>
   </div>
   <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

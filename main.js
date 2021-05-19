@@ -17,6 +17,7 @@ const todoItemFormDateOutput = document.getElementById('todo-item-date-output')
 const todoItemSaveButton = document.getElementById('todo-item-save')
 const todoItemForm = document.querySelector('#saveModal form')
 const todoItemsContainerRow = document.getElementById('todo-items-container-row')
+const fab = document.getElementById('fab')
 
 /* bootstrap init */
 const saveModal =
@@ -37,11 +38,14 @@ todoItemFormDateInput.addEventListener('change', (ev) => {
   // console.log(ev.target.value)
   if (shouldDateInputChangeEmitting) {
     viewState.form.dateInput = ev.target.value
-    todoItemFormDateInput.dataset.date =
+    /* todoItemFormDateInput.dataset.date =
+      moment(viewState.form.dateInput, "YYYY-MM-DD").format(todoItemFormDateInput.dataset.dateFormat) */
+    todoItemFormDateOutput.dataset.date =
       moment(viewState.form.dateInput, "YYYY-MM-DD").format(todoItemFormDateInput.dataset.dateFormat)
     const formDateInputChangeEvent = new Event('change', {'cancelable': true})
     shouldDateInputChangeEmitting = false
-    todoItemFormDateOutput.setAttribute('z-index', 1000)
+    // todoItemFormDateOutput.style.zIndex = 1000
+    console.log(todoItemFormDateOutput)
     console.log(todoItemFormDateInput.dispatchEvent(formDateInputChangeEvent))
   } else {
     shouldDateInputChangeEmitting = true 
@@ -63,7 +67,6 @@ todoItemSaveButton.addEventListener('click', (ev) => {
       if (!todoItemForm.checkValidity()) {
         console.log('invalid')
       } else {        
-        console.log('before', viewState.items)
         viewState.items.unshift(
           new TodoItemModel(
             viewState.form.titleInput,
@@ -71,7 +74,6 @@ todoItemSaveButton.addEventListener('click', (ev) => {
             viewState.form.dateInput
           )
         )
-        console.log('after', viewState.items)
         fillItems()
         saveModal.hide()
       }
@@ -81,6 +83,12 @@ todoItemSaveButton.addEventListener('click', (ev) => {
   }
   console.log(todoItemForm.dispatchEvent(formSubmitEvent))
   
+})
+
+fab.addEventListener('click', (ev) => {
+  todoItemForm.reset()
+  todoItemForm.classList.remove('was-validated')
+  todoItemFormDateOutput.dataset.date = ''
 })
 
 function fillItems () {
@@ -100,7 +108,7 @@ function fillItems () {
             <div class="col-md-4 d-flex align-items-center justify-content-sm-start justify-content-md-center">
               <div class="card-item-date-time-block">
                 <div>
-                  <span>Date: </span><span>${item.date}</span>
+                  <span>Date: </span><span>${moment(item.date, "YYYY-MM-DD").format('DD-MM-YYYY')}</span>
                 </div>
                 <div>
                   <span>Time: </span><span>12:00</span>
