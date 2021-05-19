@@ -23,6 +23,44 @@
   -webkit-box-orient: vertical
 }
 
+#todo-item-date {
+  position: relative;
+  width: 150px; height: 30px;
+  color: white;
+}
+
+#todo-item-date:before {
+  position: absolute;
+  top: 3px; left: 3px;
+  content: attr(data-date);
+  display: inline-block;
+  color: black;
+}
+
+#todo-item-date::-webkit-datetime-edit, input::-webkit-inner-spin-button, input::-webkit-clear-button {
+  display: none;
+}
+
+#todo-item-date::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 3px;
+  right: 0;
+  color: black;
+  opacity: 1;    
+}
+
+#todo-item-date-output {
+  /* background-color: red; */
+  width: 150px; height: 30px;
+  margin-top: 2px;
+  position: absolute;
+  z-index: -1;
+}
+
+#todo-item-date-output::before {
+  content: attr(data-date);
+}
+
 .fab {
   width: 64px;
   height: 64px;

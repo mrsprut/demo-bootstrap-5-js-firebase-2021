@@ -11,6 +11,7 @@ const viewState = {
 const todoItemFormTitleInput = document.getElementById('todo-item-title')
 const todoItemFormDetailsInput = document.getElementById('todo-item-details')
 const todoItemFormDateInput = document.getElementById('todo-item-date')
+const todoItemFormDateOutput = document.getElementById('todo-item-date-output')
 const todoItemSaveButton = document.getElementById('todo-item-save')
 const todoItemForm = document.querySelector('#saveModal form')
 
@@ -28,9 +29,25 @@ todoItemFormTitleInput.addEventListener('change', (ev) => {
 todoItemFormDetailsInput.addEventListener('change', (ev) => {
   viewState.form.detailsInput = ev.target.value
 })
+let shouldDateInputChangeEmitting = true
 todoItemFormDateInput.addEventListener('change', (ev) => {
   // console.log(ev.target.value)
-  viewState.form.dateInput = ev.target.value
+  if (shouldDateInputChangeEmitting) {
+    viewState.form.dateInput = ev.target.value
+    todoItemFormDateInput.dataset.date =
+      moment(viewState.form.dateInput, "YYYY-MM-DD").format(todoItemFormDateInput.dataset.dateFormat)
+    const formDateInputChangeEvent = new Event('change', {'cancelable': true})
+    shouldDateInputChangeEmitting = false
+    todoItemFormDateOutput.setAttribute('z-index', 1000)
+    console.log(todoItemFormDateInput.dispatchEvent(formDateInputChangeEvent))
+  } else {
+    shouldDateInputChangeEmitting = true 
+  }
+})
+todoItemFormDateOutput.addEventListener('click', (ev) => {
+  console.log('click')
+  const formDateInputClickEvent = new Event('click', {'cancelable': true})
+  console.log(todoItemFormDateInput.dispatchEvent(formDateInputClickEvent))
 })
 todoItemSaveButton.addEventListener('click', (ev) => {
   const formSubmitEvent = new Event('submit', {'cancelable': true})

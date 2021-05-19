@@ -251,7 +251,8 @@
                 Please provide a valid dodo details
               </div>
             </div>
-            <input type="date" id="todo-item-date" name="todo-item-date" required>
+            <div id="todo-item-date-output"></div>
+            <input type="date" id="todo-item-date" name="todo-item-date" data-date="" data-date-format="DD/MM/YYYY" required>
             <div class="invalid-feedback">
               Please provide a valid dodo date
             </div>
@@ -269,6 +270,8 @@
     <i class="bi-plus"></i>
   </div>
   <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script type="module" src="./node_modules/moment/dist/moment.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
   <script src="./main.js"></script>
 </body>
 </html>
