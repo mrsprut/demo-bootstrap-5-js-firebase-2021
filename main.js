@@ -1,6 +1,7 @@
 /* state */
 const viewState = {
   'items': [],
+  'selectedItemId': null,
   'form': {
     'titleInput': '',
     'detailsInput': '',
@@ -66,14 +67,27 @@ todoItemSaveButton.addEventListener('click', (ev) => {
       ev.stopPropagation()
       if (!todoItemForm.checkValidity()) {
         console.log('invalid')
-      } else {        
-        viewState.items.unshift(
-          new TodoItemModel(
-            viewState.form.titleInput,
-            viewState.form.detailsInput,
-            viewState.form.dateInput
+      } else {
+        if (viewState.selectedItemId) {
+          // update item
+          const selectedItem =
+            viewState.items.find((item) => item.id === viewState.selectedItemId)
+          if (selectedItem) {
+            selectedItem.title = viewState.form.titleInput
+            selectedItem.details = viewState.form.detailsInput
+            selectedItem.date = viewState.form.dateInput
+          }
+          viewState.selectedItemId = null
+        } else {
+          // create item
+          viewState.items.unshift(
+            new TodoItemModel(
+              viewState.form.titleInput,
+              viewState.form.detailsInput,
+              viewState.form.dateInput
+            )
           )
-        )
+        }
         fillItems()
         saveModal.hide()
       }
@@ -90,6 +104,22 @@ fab.addEventListener('click', (ev) => {
   todoItemForm.classList.remove('was-validated')
   todoItemFormDateOutput.dataset.date = ''
 })
+
+function listItemEditButtonHandler (itemId) {
+  viewState.selectedItemId = itemId
+  const selectedItem =
+    viewState.items.find((item) => item.id === viewState.selectedItemId)
+  if (selectedItem) {
+    viewState.form.titleInput = selectedItem.title
+    viewState.form.detailsInput = selectedItem.details
+    viewState.form.dateInput = selectedItem.date
+    todoItemFormTitleInput.value = viewState.form.titleInput
+    todoItemFormDetailsInput.value = viewState.form.detailsInput
+    todoItemFormDateInput.value = viewState.form.dateInput
+    todoItemFormDateOutput.dataset.date =
+      moment(viewState.form.dateInput, "YYYY-MM-DD").format(todoItemFormDateInput.dataset.dateFormat)
+  }
+}
 
 function fillItems () {
   // todoItemsContainerRow.innerHTML = ''
@@ -121,7 +151,7 @@ function fillItems () {
               <div class="card-item-block">
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailsModal">Details</button>
                 <button class="btn btn-outline-secondary">Done</button>
-                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#saveModal">Edit</button>
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#saveModal" onClick="listItemEditButtonHandler(${(item.id)})">Edit</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
               </div>
             </div>
@@ -131,6 +161,4 @@ function fillItems () {
     `
   ).reduce((resultView, currentView) => resultView += currentView, '')
   todoItemsContainerRow.innerHTML = itemViews
-  console.log('fillItems')
-  
 }
