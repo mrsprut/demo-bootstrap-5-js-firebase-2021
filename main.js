@@ -17,12 +17,16 @@ const todoItemFormDateInput = document.getElementById('todo-item-date')
 const todoItemFormDateOutput = document.getElementById('todo-item-date-output')
 const todoItemSaveButton = document.getElementById('todo-item-save')
 const todoItemForm = document.querySelector('#saveModal form')
+const todoItemDeleteModalConfirmButton = document.getElementById('deleteModal__confirm')
 const todoItemsContainerRow = document.getElementById('todo-items-container-row')
 const fab = document.getElementById('fab')
 
 /* bootstrap init */
 const saveModal =
   new bootstrap.Modal(document.getElementById('saveModal'), {})
+
+const deleteModal =
+  new bootstrap.Modal(document.getElementById('deleteModal'), {})
 
 // console.log(viewState.form.dateInput)
 
@@ -105,6 +109,20 @@ fab.addEventListener('click', (ev) => {
   todoItemFormDateOutput.dataset.date = ''
 })
 
+todoItemDeleteModalConfirmButton.addEventListener('click', (ev) => {
+  // элемент, найденный по его ИД
+  const selectedItem =
+    viewState.items.find((item) => item.id === viewState.selectedItemId)
+  if (selectedItem) {
+    // по индексу, определенному по ссылке на элемнт,
+    // удаляем один элемент
+    viewState.items.splice(viewState.items.indexOf(selectedItem), 1)
+    viewState.selectedItemId = null
+    fillItems()
+    deleteModal.hide()
+  }
+})
+
 function listItemEditButtonHandler (itemId) {
   viewState.selectedItemId = itemId
   const selectedItem =
@@ -119,6 +137,10 @@ function listItemEditButtonHandler (itemId) {
     todoItemFormDateOutput.dataset.date =
       moment(viewState.form.dateInput, "YYYY-MM-DD").format(todoItemFormDateInput.dataset.dateFormat)
   }
+}
+
+function listItemDeleteButtonHandler (itemId) {
+  viewState.selectedItemId = itemId
 }
 
 function fillItems () {
@@ -152,7 +174,7 @@ function fillItems () {
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailsModal">Details</button>
                 <button class="btn btn-outline-secondary">Done</button>
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#saveModal" onClick="listItemEditButtonHandler(${(item.id)})">Edit</button>
-                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onClick="listItemDeleteButtonHandler(${(item.id)})">Delete</button>
               </div>
             </div>
           </div>
