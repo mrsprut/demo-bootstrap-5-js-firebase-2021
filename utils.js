@@ -6,3 +6,11 @@ function serverItemModelToClientItemModel (serverItemModel) {
     serverItemModel.id
   )
 }
+
+function clientItemModelToServerItemModel (clientItemModel) {
+  return {
+    'title': clientItemModel.title,
+    'description': clientItemModel.details,
+    'date': clientItemModel.date
+  }
+}

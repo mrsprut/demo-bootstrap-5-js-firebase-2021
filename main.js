@@ -100,13 +100,23 @@ todoItemSaveButton.addEventListener('click', (ev) => {
           viewState.selectedItemId = null
         } else {
           // create item
-          viewState.items.unshift(
+          /* viewState.items.unshift(
             new TodoItemModel(
               viewState.form.titleInput,
               viewState.form.detailsInput,
               viewState.form.dateInput
             )
+          ) */
+          const newClientItem = new TodoItemModel(
+            viewState.form.titleInput,
+            viewState.form.detailsInput,
+            viewState.form.dateInput
           )
+          const responseId = addTodoItem(clientItemModelToServerItemModel(newClientItem))
+          if (responseId) {
+            newClientItem.id = responseId
+            viewState.items.unshift(newClientItem)
+          }
         }
         fillItems()
         saveModal.hide()
