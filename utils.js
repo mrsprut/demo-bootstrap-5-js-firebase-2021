@@ -11,6 +11,7 @@ function clientItemModelToServerItemModel (clientItemModel) {
   return {
     'title': clientItemModel.title,
     'description': clientItemModel.details,
-    'date': clientItemModel.date
+    'date': clientItemModel.date,
+    'id': clientItemModel.id
   }
 }

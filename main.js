@@ -39,7 +39,7 @@ function fetchItemsAction () {
     if (serverItemModel.data) {
       viewState.items.length = 0
       serverItemModel.data.forEach((item) => {
-        viewState.items.unshift(
+        viewState.items.push(
           serverItemModelToClientItemModel(item)
         )
       })
@@ -82,7 +82,7 @@ todoItemSaveButton.addEventListener('click', (ev) => {
   // todoItemForm.parentNode.replaceChild(todoItemFormClone, todoItemForm)
   // todoItemForm = todoItemFormClone
   if (!viewState.fabSubmitInit) {
-    todoItemForm.addEventListener('submit', (ev) => {
+    todoItemForm.addEventListener('submit', async (ev) => {
       ev.preventDefault()
       ev.stopPropagation()
       if (!todoItemForm.checkValidity()) {
@@ -90,12 +90,28 @@ todoItemSaveButton.addEventListener('click', (ev) => {
       } else {
         if (viewState.selectedItemId) {
           // update item
-          const selectedItem =
+          /* const selectedItem =
             viewState.items.find((item) => item.id === viewState.selectedItemId)
           if (selectedItem) {
             selectedItem.title = viewState.form.titleInput
             selectedItem.details = viewState.form.detailsInput
             selectedItem.date = viewState.form.dateInput
+          } */
+          const selectedItemOriginal =
+            viewState.items.find((item) => item.id === viewState.selectedItemId)
+          if (selectedItemOriginal) {
+            const selectedItem = Object.assign({}, selectedItemOriginal)
+            selectedItem.title = viewState.form.titleInput
+            selectedItem.details = viewState.form.detailsInput
+            selectedItem.date = viewState.form.dateInput
+            selectedItem.id = viewState.selectedItemId
+            const responseSuccess =
+              await updateTodoItem(clientItemModelToServerItemModel(selectedItem))
+            if (responseSuccess) {
+              selectedItemOriginal.title = viewState.form.titleInput
+              selectedItemOriginal.details = viewState.form.detailsInput
+              selectedItemOriginal.date = viewState.form.dateInput
+            }
           }
           viewState.selectedItemId = null
         } else {
