@@ -16,7 +16,8 @@ async function addTodoItem (serverTodoItemModel) {
         body: JSON.stringify(serverTodoItemModel)
       }
     )
-  return response.status === 201 ? (await response.json()).data.id : false
+  const responseBody = await response.json()
+  return response.status === 201 ? responseBody.data.id : false
 }
 
 async function updateTodoItem (serverTodoItemModel) {
@@ -32,4 +33,15 @@ async function updateTodoItem (serverTodoItemModel) {
       }
     )
   return response.status === 200
+}
+
+async function deleteTodoItem (id) {
+  const response =
+    await fetch(
+      `${BASE_URL}/items/${id}`,
+      {
+        method: 'DELETE'
+      }
+    )
+  return response.status === 204
 }
