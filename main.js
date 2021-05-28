@@ -32,6 +32,22 @@ const deleteModal =
 
 // todoItemFormDateInput.min = viewState.form.dateInput
 
+function fetchItemsAction () {
+  fetchTodoItems().then((response) => {
+    return response.json()
+  }).then((serverItemModel) => {
+    if (serverItemModel.data) {
+      viewState.items.length = 0
+      serverItemModel.data.forEach((item) => {
+        viewState.items.unshift(
+          serverItemModelToClientItemModel(item)
+        )
+      })
+      fillItems()
+    }
+  })
+}
+
 todoItemFormTitleInput.addEventListener('change', (ev) => {
   viewState.form.titleInput = ev.target.value
 })
@@ -184,3 +200,5 @@ function fillItems () {
   ).reduce((resultView, currentView) => resultView += currentView, '')
   todoItemsContainerRow.innerHTML = itemViews
 }
+
+fetchItemsAction()
