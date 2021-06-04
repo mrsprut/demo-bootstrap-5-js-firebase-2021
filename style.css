@@ -73,6 +73,10 @@
   content: attr(data-date);
 }
 
+.custom-modal-body {
+  overflow-wrap: break-word
+}
+
 .fab {
   width: 64px;
   height: 64px;

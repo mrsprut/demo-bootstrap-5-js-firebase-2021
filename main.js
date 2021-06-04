@@ -17,6 +17,7 @@ const todoItemFormDateInput = document.getElementById('todo-item-date')
 const todoItemFormDateOutput = document.getElementById('todo-item-date-output')
 const todoItemSaveButton = document.getElementById('todo-item-save')
 const todoItemForm = document.querySelector('#saveModal form')
+// const todoItemDetailsModalButton = document.getElementById('deleteModal__confirm')
 const todoItemDeleteModalConfirmButton = document.getElementById('deleteModal__confirm')
 const todoItemsContainerRow = document.getElementById('todo-items-container-row')
 const fab = document.getElementById('fab')
@@ -184,8 +185,19 @@ function listItemEditButtonHandler (itemId) {
   }
 }
 
+function listItemDetailsButtonHandler (itemId) {
+  if (itemId) {
+    const selectedItem =
+      viewState.items.find((item) => item.id === itemId)
+    const detailsModal = document.getElementById('detailsModal')
+    detailsModal.querySelector('#detailsModal__title').innerHTML = selectedItem.title
+    detailsModal.querySelector('#detailsModal__details').innerHTML = selectedItem.details
+    detailsModal.querySelector('#detailsModal__date').innerHTML =
+      moment(selectedItem.date, "YYYY-MM-DD").format('DD-MM-YYYY')
+  }
+}
+
 function listItemDeleteButtonHandler (itemId) {
-  console.log('itemId', itemId)
   if (itemId) {
     viewState.selectedItemId = itemId
   }
@@ -220,7 +232,7 @@ function fillItems () {
           <div class="row g-0">
             <div class="col-md-12">
               <div class="card-item-block">
-                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailsModal">Details</button>
+                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailsModal" onClick="listItemDetailsButtonHandler(${item.id})">Details</button>
                 <button class="btn btn-outline-secondary">Done</button>
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#saveModal" onClick="listItemEditButtonHandler(${item.id})">Edit</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onClick="listItemDeleteButtonHandler(${item.id})">Delete</button>
