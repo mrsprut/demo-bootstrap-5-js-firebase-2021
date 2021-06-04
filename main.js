@@ -179,7 +179,7 @@ function listItemEditButtonHandler (itemId) {
     viewState.form.dateInput = selectedItem.date
     todoItemFormTitleInput.value = viewState.form.titleInput
     todoItemFormDetailsInput.value = viewState.form.detailsInput
-    todoItemFormDateInput.value = viewState.form.dateInput
+    todoItemFormDateInput.valueAsDate = new Date(viewState.form.dateInput)
     todoItemFormDateOutput.dataset.date =
       moment(viewState.form.dateInput, "YYYY-MM-DD").format(todoItemFormDateInput.dataset.dateFormat)
   }
