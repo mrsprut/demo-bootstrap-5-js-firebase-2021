@@ -197,6 +197,23 @@ function listItemDetailsButtonHandler (itemId) {
   }
 }
 
+async function listItemToggleDoneButtonHandler (itemId) {
+  if (itemId) {
+    const selectedItemOriginal =
+      viewState.items.find((item) => item.id === itemId)
+    if (selectedItemOriginal) {
+      const selectedItem = Object.assign({}, selectedItemOriginal)
+      selectedItem.done = !selectedItem.done
+      const responseSuccess =
+        await updateTodoItem(clientItemModelToServerItemModel(selectedItem))
+      if (responseSuccess) {
+        selectedItemOriginal.done = selectedItem.done
+        fillItems()
+      }
+    }
+  }
+}
+
 function listItemDeleteButtonHandler (itemId) {
   if (itemId) {
     viewState.selectedItemId = itemId
@@ -208,7 +225,7 @@ function fillItems () {
   console.log('fill', viewState.items)
   const itemViews = viewState.items.map(item =>
       `<div class="col-sm-1 col-md-6 col-lg-4 col-lg-3">
-        <div class="card mb-3">
+        <div class="card mb-3 ${item.done ? 'list-item-is-done' : ''}">
           <div class="row g-0">
             <div class="col-md-8">
               <div class="card-body">
@@ -233,7 +250,7 @@ function fillItems () {
             <div class="col-md-12">
               <div class="card-item-block">
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailsModal" onClick="listItemDetailsButtonHandler(${item.id})">Details</button>
-                <button class="btn btn-outline-secondary">Done</button>
+                <button class="btn btn-outline-secondary" onClick="listItemToggleDoneButtonHandler(${item.id})">Done</button>
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#saveModal" onClick="listItemEditButtonHandler(${item.id})">Edit</button>
                 <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onClick="listItemDeleteButtonHandler(${item.id})">Delete</button>
               </div>

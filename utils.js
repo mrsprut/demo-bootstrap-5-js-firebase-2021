@@ -3,6 +3,7 @@ function serverItemModelToClientItemModel (serverItemModel) {
     serverItemModel.title,
     serverItemModel.description,
     serverItemModel.date,
+    serverItemModel.done,
     serverItemModel.id
   )
 }
@@ -12,6 +13,7 @@ function clientItemModelToServerItemModel (clientItemModel) {
     'title': clientItemModel.title,
     'description': clientItemModel.details,
     'date': clientItemModel.date,
+    'done': clientItemModel.done,
     'id': clientItemModel.id
   }
 }

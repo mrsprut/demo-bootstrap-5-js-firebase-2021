@@ -1,6 +1,6 @@
 class TodoItemModel {
   // static lastId = 0
-  constructor(title, details, date, id) {
+  constructor(title, details, date, done, id) {
     /* if (!id) {
       this.id = ++TodoItemModel.lastId
     } else {
@@ -10,6 +10,7 @@ class TodoItemModel {
     this.title = title
     this.details = details
     this.date = date
+    this.done = done
     console.log(this)
   }
 }

@@ -73,6 +73,11 @@
   content: attr(data-date);
 }
 
+.list-item-is-done {
+  background-color: #64FFDA;
+  opacity: 0.5
+}
+
 .custom-modal-body {
   overflow-wrap: break-word
 }
