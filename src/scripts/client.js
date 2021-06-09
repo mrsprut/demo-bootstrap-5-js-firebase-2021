@@ -45,3 +45,5 @@ async function deleteTodoItem (id) {
     )
   return response.status === 204
 }
+
+export {fetchTodoItems, addTodoItem, updateTodoItem, deleteTodoItem}

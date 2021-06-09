@@ -1,3 +1,20 @@
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+import firebase from 'firebase/app'
+import firebaseConfig from '../config/firebase'
+// import bootstrap from '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'
+import { Modal } from 'bootstrap'
+
+import TodoItemModel from './item'
+import {
+  serverItemModelToClientItemModel as sToCModelConvert,
+  clientItemModelToServerItemModel as cToSModelConvert}
+  from './utils'
+import { fetchTodoItems, addTodoItem, updateTodoItem, deleteTodoItem } from './client'
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig)
+
 /* state */
 const viewState = {
   'items': [],
@@ -24,10 +41,10 @@ const fab = document.getElementById('fab')
 
 /* bootstrap init */
 const saveModal =
-  new bootstrap.Modal(document.getElementById('saveModal'), {})
+  new Modal(document.getElementById('saveModal'), {})
 
 const deleteModal =
-  new bootstrap.Modal(document.getElementById('deleteModal'), {})
+  new Modal(document.getElementById('deleteModal'), {})
 
 // console.log(viewState.form.dateInput)
 
@@ -41,7 +58,7 @@ function fetchItemsAction () {
       viewState.items.length = 0
       serverItemModel.data.forEach((item) => {
         viewState.items.push(
-          serverItemModelToClientItemModel(item)
+          sToCModelConvert(item)
         )
       })
       fillItems()
@@ -107,7 +124,7 @@ todoItemSaveButton.addEventListener('click', (ev) => {
             selectedItem.date = viewState.form.dateInput
             selectedItem.id = viewState.selectedItemId
             const responseSuccess =
-              await updateTodoItem(clientItemModelToServerItemModel(selectedItem))
+              await updateTodoItem(cToSModelConvert(selectedItem))
             if (responseSuccess) {
               selectedItemOriginal.title = viewState.form.titleInput
               selectedItemOriginal.details = viewState.form.detailsInput
@@ -129,7 +146,7 @@ todoItemSaveButton.addEventListener('click', (ev) => {
             viewState.form.detailsInput,
             viewState.form.dateInput
           )
-          const responseId = await addTodoItem(clientItemModelToServerItemModel(newClientItem))
+          const responseId = await addTodoItem(cToSModelConvert(newClientItem))
           if (responseId) {
             newClientItem.id = responseId
             viewState.items.unshift(newClientItem)
@@ -170,7 +187,7 @@ todoItemDeleteModalConfirmButton.addEventListener('click', async (ev) => {
 })
 
 function listItemEditButtonHandler (itemId) {
-  viewState.selectedItemId = itemId
+  viewState.selectedItemId = Number(itemId)
   const selectedItem =
     viewState.items.find((item) => item.id === viewState.selectedItemId)
   if (selectedItem) {
@@ -188,24 +205,26 @@ function listItemEditButtonHandler (itemId) {
 function listItemDetailsButtonHandler (itemId) {
   if (itemId) {
     const selectedItem =
-      viewState.items.find((item) => item.id === itemId)
-    const detailsModal = document.getElementById('detailsModal')
-    detailsModal.querySelector('#detailsModal__title').innerHTML = selectedItem.title
-    detailsModal.querySelector('#detailsModal__details').innerHTML = selectedItem.details
-    detailsModal.querySelector('#detailsModal__date').innerHTML =
-      moment(selectedItem.date, "YYYY-MM-DD").format('DD-MM-YYYY')
+      viewState.items.find((item) => item.id === Number(itemId))
+    if (selectedItem) {
+      const detailsModal = document.getElementById('detailsModal')
+      detailsModal.querySelector('#detailsModal__title').innerHTML = selectedItem.title
+      detailsModal.querySelector('#detailsModal__details').innerHTML = selectedItem.details
+      detailsModal.querySelector('#detailsModal__date').innerHTML =
+        moment(selectedItem.date, "YYYY-MM-DD").format('DD-MM-YYYY')
+    }
   }
 }
 
 async function listItemToggleDoneButtonHandler (itemId) {
   if (itemId) {
     const selectedItemOriginal =
-      viewState.items.find((item) => item.id === itemId)
+      viewState.items.find((item) => item.id === Number(itemId))
     if (selectedItemOriginal) {
       const selectedItem = Object.assign({}, selectedItemOriginal)
       selectedItem.done = !selectedItem.done
       const responseSuccess =
-        await updateTodoItem(clientItemModelToServerItemModel(selectedItem))
+        await updateTodoItem(cToSModelConvert(selectedItem))
       if (responseSuccess) {
         selectedItemOriginal.done = selectedItem.done
         fillItems()
@@ -216,9 +235,22 @@ async function listItemToggleDoneButtonHandler (itemId) {
 
 function listItemDeleteButtonHandler (itemId) {
   if (itemId) {
-    viewState.selectedItemId = itemId
+    viewState.selectedItemId = Number(itemId)
   }
 }
+
+document.addEventListener('click', function(e) {
+  const target = e.target
+  if (target.dataset.bsTarget && target.dataset.bsTarget === '#detailsModal') {
+    listItemDetailsButtonHandler(target.dataset.id)
+  } else if (target.dataset.action && target.dataset.action === 'toggle-done') {
+    listItemToggleDoneButtonHandler(target.dataset.id)
+  } else if (target.dataset.bsTarget && target.dataset.bsTarget === '#saveModal') {
+    listItemEditButtonHandler(target.dataset.id)
+  } else if (target.dataset.bsTarget && target.dataset.bsTarget === '#deleteModal') {
+    listItemDeleteButtonHandler(target.dataset.id)
+  }
+})
 
 function fillItems () {
   // todoItemsContainerRow.innerHTML = ''
@@ -249,10 +281,10 @@ function fillItems () {
           <div class="row g-0">
             <div class="col-md-12">
               <div class="card-item-block">
-                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#detailsModal" onClick="listItemDetailsButtonHandler(${item.id})">Details</button>
-                <button class="btn btn-outline-secondary" onClick="listItemToggleDoneButtonHandler(${item.id})">Done</button>
-                <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#saveModal" onClick="listItemEditButtonHandler(${item.id})">Edit</button>
-                <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onClick="listItemDeleteButtonHandler(${item.id})">Delete</button>
+                <button class="btn btn-outline-secondary" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#detailsModal">Details</button>
+                <button class="btn btn-outline-secondary" data-id="${item.id}" data-action="toggle-done">Done</button>
+                <button class="btn btn-outline-secondary" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#saveModal">Edit</button>
+                <button class="btn btn-outline-danger" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
               </div>
             </div>
           </div>

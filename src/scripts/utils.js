@@ -1,3 +1,5 @@
+import TodoItemModel from './item'
+
 function serverItemModelToClientItemModel (serverItemModel) {
   return new TodoItemModel(
     serverItemModel.title,
@@ -17,3 +19,5 @@ function clientItemModelToServerItemModel (clientItemModel) {
     'id': clientItemModel.id
   }
 }
+
+export {serverItemModelToClientItemModel, clientItemModelToServerItemModel}
