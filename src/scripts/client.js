@@ -1,4 +1,5 @@
-const BASE_URL = 'http://localhost:4000/api'
+// const BASE_URL = 'http://localhost:4000/api'
+const BASE_URL = 'https://us-central1-buki-2021.cloudfunctions.net/api'
 
 async function fetchTodoItems () {
   return await fetch(`${BASE_URL}/items`)

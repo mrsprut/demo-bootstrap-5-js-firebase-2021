@@ -3,6 +3,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 var path = require("path");
 
 module.exports = {
+  mode: "production",
   entry: {
     main: "./src/scripts/main.js",
   },//path relative to this file
