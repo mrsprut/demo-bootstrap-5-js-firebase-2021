@@ -1,3 +1,11 @@
+#signOut {
+  display: none;
+}
+
+#signIn {
+  display: none;
+}
+
 @media screen and (min-width: 960px)  {
   .mobile {display: none}
 }
@@ -95,6 +103,7 @@
   z-index: 9999;
   box-shadow: 0 6px 10px 0 #666;
   transition: all 0.1s ease-in-out;
+  display: none;
 }
 
 .fab:hover {
